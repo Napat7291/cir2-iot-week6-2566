@@ -2,7 +2,9 @@ const express = require('express')
 const app = express()
 const logger =require('morgan')
 const cors = require('cors')
-const port = 3000
+const products = require('./data');
+require('dotenv').config()
+const port =process.env.PORT ||5000;
 
 //Middleware
 app.use(cors()) //croos platform
@@ -14,57 +16,57 @@ app.get('/',  (req,res) => {
     return res.status(200).json({message: "Home page"});
 });
 
-app.get("/uset",funclion(req,res)){
-    const uter =[
+//Get:http://localhost:3000/user
+app.get('/user' , (req,res) => {
+    const user = [
         {
             name: "Mark Zuckerberg",
             age: 55,
             gender:"Male"
         }
     ]
-    return res.send(200).json({
+    return res.status(200).json({
         data:true,
         user:user,
     });
-}
-//post:http://localhost:3000/post
+});
+
+//post:http://localhost:3000/user
 app.post('/user' , (req,res) => {
     const data = req.body
-    console.log("ID",data.id);
-    console.log("liame",datm.name);
-    console.log("Age",data.age);
-    console.log("Gender",data.gerder);
+    console.log("id", data.id);
+    console.log("Name", data.name);
+    console.log("Age", data.age);
+    console.log("Gender", data.gender);
     return res.status(200).json({
         data:true,
-        user:data,
+        user:data,  
     });
 });
-//post:http://localhost:3000/post
+
+//put:http://localhost:3000/user
 app.put('/user' , (req,res) => {
     const data = req.body
-    console.log("ID",data.id);
-    console.log("liame",datm.name);
-    console.log("Age",data.age);
-    console.log("Gender",data.gerder);
+    console.log("id", data.id);
+    console.log("Name", data.name);
+    console.log("Age", data.age);
+    console.log("Gender", data.gender);
     return res.status(200).json({
         data:true,
-        user:data,
-        message:"Uedate "
+        user:data, 
+        message:"Update user successfully!",
     });
 });
-//post:http://localhost:3000/post
-app.post('/user' , (req,res) => {
+
+//Delete:http://localhost:3000/user
+app.delete('/user' , (req,res) => {
     const data = req.body
-    console.log("ID",data.id);
-    console.log("liame",datm.name);
-    console.log("Age",data.age);
-    console.log("Gender",data.gerder);
     return res.status(200).json({
-        data:true,
-        user:data,
+        data:true, 
         message:"Delete user successfully!",
     });
 });
+
 //Get All:http://localhost:3000/api/products
 app.get('/api/products', (req,res) => {
     const partial_products = products.map((products)=>{
@@ -84,16 +86,17 @@ app.get('/api/products/:productID', (req,res) => {
 });
 
 //Query String GET :http://localhost:3000/api/query/?name=phone
-app.get('/api/query',()=>{
-    const name = req.query.name.toLowerCase()
-    const product_result = products.filter(
-        (product)=>product.name.toLowerCase().includes(name)
-    )
-    if (product_result.length < 1) {
-        return res.status(404).send("No products metched your search")
+app.get("/api/query", (req,res) => {
+    const name = req.query.name.toLowerCase();
+    const peoducts_result = products.filter(
+        (product) => product.name.toLowerCase().includes(name)
+    );
+    if (products_result.length < 1) {
+        return res.status(200).send("No products method your search")
     }
-    res.json(product_result);
+    res.json(products_result);
 });
+
 app.listen(port,() =>{
     console.log(`Server running at http://localhost:${port}`);
 });
